@@ -5,7 +5,6 @@ import br.com.caelum.leilao.dominio.Lance;
 import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
 import br.com.caelum.leilao.dominio.teste.builder.CriadorDeLeilao;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestaValoreMaiorEMenor {
+public class TestaAvaliador {
 
     private Avaliador avaliador;
     private Usuario joao;
@@ -28,6 +27,15 @@ public class TestaValoreMaiorEMenor {
         this.maria = new Usuario("Maria");
         this.jose = new Usuario("Jose");
 
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void naoDeveAvaliarLeilaoSemLances() {
+        Leilao leilao = new CriadorDeLeilao()
+                .para("PS5")
+                .constroi();
+
+        avaliador.avalia(leilao);
     }
 
     @Test
