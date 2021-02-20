@@ -4,7 +4,9 @@ import br.com.caelum.leilao.dominio.Avaliador;
 import br.com.caelum.leilao.dominio.Lance;
 import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
+import br.com.caelum.leilao.dominio.teste.builder.CriadorDeLeilao;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -12,38 +14,44 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class TestaValoreMaiorEMenor {
+
+    private Avaliador avaliador;
+    private Usuario joao;
+    private Usuario maria;
+    private Usuario jose;
+
+
+    @Before
+    public void criaAvaliador() {
+        this.avaliador = new Avaliador();
+        this.joao = new Usuario("Joao");
+        this.maria = new Usuario("Maria");
+        this.jose = new Usuario("Jose");
+
+    }
+
     @Test
     public void validaMaiorEMenor() {
-        Usuario joao = new Usuario("João");
-        Usuario maria = new Usuario("Maria");
-        Usuario rodolfo = new Usuario("Rodolfo");
-
-        Leilao leilao = new Leilao("PS5");
-
-        leilao.propoe(new Lance(joao, 1000));
-        leilao.propoe(new Lance(maria, 3000));
-        leilao.propoe(new Lance(rodolfo, 2000));
-
-        Avaliador avaliador = new Avaliador();
+        Leilao leilao = new CriadorDeLeilao()
+                .para("PS5")
+                .lance(joao, 1000)
+                .lance(maria, 3000)
+                .lance(jose, 2000)
+                .constroi();
 
         avaliador.avalia(leilao);
 
-        double maiorEsperado = 3000;
-        double menorEsperado = 1000;
-
-        assertEquals(maiorEsperado, avaliador.getMaiorDeTodos(), 0.00001);
-        assertEquals(menorEsperado, avaliador.getMenorDeTodos(), 0.00001);
+        assertEquals(3000, avaliador.getMaiorDeTodos(), 0.00001);
+        assertEquals(1000, avaliador.getMenorDeTodos(), 0.00001);
     }
 
     @Test
     public void validaSoComUmLance() {
-        Usuario joao = new Usuario("João");
 
-        Leilao leilao = new Leilao("PS5");
-
-        leilao.propoe(new Lance(joao, 1000));
-
-        Avaliador avaliador = new Avaliador();
+        Leilao leilao = new CriadorDeLeilao()
+                .para("PS5")
+                .lance(joao, 1000)
+                .constroi();
 
         avaliador.avalia(leilao);
 
@@ -53,18 +61,14 @@ public class TestaValoreMaiorEMenor {
 
     @Test
     public void deveEncontrarOsTresMaioresLances() {
-        Usuario joao = new Usuario("João");
-        Usuario maria = new Usuario("Maria");
-        Usuario rodolfo = new Usuario("Rodolfo");
 
-        Leilao leilao = new Leilao("PS5");
-
-        leilao.propoe(new Lance(joao, 1000));
-        leilao.propoe(new Lance(maria, 3000));
-        leilao.propoe(new Lance(joao, 2000));
-        leilao.propoe(new Lance(rodolfo, 4000));
-
-        Avaliador avaliador = new Avaliador();
+        Leilao leilao = new CriadorDeLeilao()
+                .para("PS5")
+                .lance(joao, 1000)
+                .lance(maria, 3000)
+                .lance(joao, 2000)
+                .lance(jose, 4000)
+                .constroi();
 
         avaliador.avalia(leilao);
 
