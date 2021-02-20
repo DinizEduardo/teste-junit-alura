@@ -61,7 +61,7 @@ public class TestaValoreMaiorEMenor {
 
         leilao.propoe(new Lance(joao, 1000));
         leilao.propoe(new Lance(maria, 3000));
-        leilao.propoe(new Lance(rodolfo, 2000));
+        leilao.propoe(new Lance(joao, 2000));
         leilao.propoe(new Lance(rodolfo, 4000));
 
         Avaliador avaliador = new Avaliador();
